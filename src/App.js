@@ -1,23 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
 function App() {
+  const [character, setCharacter] = useState([]);
+
+  useEffect(() => {
+    axios.get("https://rickandmortyapi.com/api/episode").then((response) => {
+      const respostaApi = response.data.results;
+      setCharacter(respostaApi);
+    });
+  }, []); // Adicionei um array vazio para garantir que o efeito seja executado apenas uma vez, sem dependências.
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>List of episodes from rick and morty</h1>
+      <ul>
+        {character.map((episodio) => (
+          <li key={episodio.name}>{episodio.name}</li>
+        ))}
+      </ul>
     </div>
   );
 }
